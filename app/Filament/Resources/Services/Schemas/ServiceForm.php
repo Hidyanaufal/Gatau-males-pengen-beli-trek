@@ -16,14 +16,13 @@ class ServiceForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('Nama Layanan')
-                    ->placeholder('Contoh: Cuci Kiloan Reguler')
+                    ->label('Nama layanan')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->unique(ignoreRecord: true),
 
                 Textarea::make('description')
-                    ->label('Deskripsi Layanan')
-                    ->placeholder('Masukkan deskripsi layanan laundry')
+                    ->label('Deskripsi')
                     ->rows(3)
                     ->columnSpanFull(),
 
@@ -32,17 +31,20 @@ class ServiceForm
                     ->required()
                     ->numeric()
                     ->minValue(0)
-                    ->prefix('Rp')
-                    ->placeholder('7000'),
+                    ->prefix('Rp'),
 
                 Select::make('unit')
-                    ->label('Satuan Layanan')
-                    ->options(ServiceUnit::class)
-                    ->default('kg')
-                    ->required(),
+                    ->label('Satuan harga')
+                    ->required()
+                    ->default(ServiceUnit::Kg->value)
+                    ->options(
+                        collect(ServiceUnit::cases())
+                            ->mapWithKeys(fn (ServiceUnit $unit) => [$unit->value => $unit->label()])
+                            ->all()
+                    ),
 
                 TextInput::make('estimated_hours')
-                    ->label('Estimasi Pengerjaan')
+                    ->label('Estimasi pengerjaan')
                     ->required()
                     ->numeric()
                     ->integer()
@@ -51,9 +53,8 @@ class ServiceForm
                     ->suffix('jam'),
 
                 Toggle::make('is_active')
-                    ->label('Layanan Aktif')
-                    ->default(true)
-                    ->required(),
+                    ->label('Aktif')
+                    ->default(true),
             ]);
     }
 }

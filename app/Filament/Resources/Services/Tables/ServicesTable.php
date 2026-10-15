@@ -2,12 +2,13 @@
 
 namespace App\Filament\Resources\Services\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+use App\Enums\ServiceUnit;
+use App\Models\Service;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class ServicesTable
@@ -17,58 +18,40 @@ class ServicesTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Nama Layanan')
+                    ->label('Layanan')
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('price')
                     ->label('Harga')
-                    ->formatStateUsing(
-                        fn ($state): string => 'Rp ' .
-                            number_format((float) $state, 0, ',', '.')
-                    )
+                    ->money('IDR', locale: 'id')
                     ->sortable(),
 
                 TextColumn::make('unit')
                     ->label('Satuan')
-                    ->badge()
-                    ->searchable(),
+                    ->formatStateUsing(fn ($state) => $state instanceof ServiceUnit ? $state->label() : $state),
 
                 TextColumn::make('estimated_hours')
-                    ->label('Estimasi Pengerjaan')
-                    ->formatStateUsing(
-                        fn ($state): string => $state . ' jam'
-                    )
+                    ->label('Estimasi')
+                    ->suffix(' jam')
                     ->sortable(),
 
-                IconColumn::make('is_active')
+                ToggleColumn::make('is_active')
+                    ->label('Aktif'),
+            ])
+            ->filters([
+                TernaryFilter::make('is_active')
                     ->label('Status')
-                    ->boolean(),
-
-                TextColumn::make('created_at')
-                    ->label('Tanggal Dibuat')
-                    ->dateTime('d M Y, H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                TextColumn::make('updated_at')
-                    ->label('Terakhir Diperbarui')
-                    ->dateTime('d M Y, H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->trueLabel('Aktif')
+                    ->falseLabel('Nonaktif'),
             ])
             ->recordActions([
-                ViewAction::make()
-                    ->label('Lihat'),
-
-                EditAction::make()
-                    ->label('Edit'),
+                EditAction::make(),
+                DeleteAction::make()
+                    ->modalHeading('Hapus layanan?')
+                    ->modalDescription('Layanan akan dihapus permanen. Layanan yang pernah dipakai pesanan tidak bisa dihapus, cukup nonaktifkan.')
+                    ->hidden(fn (Service $record): bool => $record->orderItems()->exists()),
             ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make()
-                        ->label('Hapus Terpilih'),
-                ]),
-            ]);
+            ->defaultSort('name');
     }
 }
