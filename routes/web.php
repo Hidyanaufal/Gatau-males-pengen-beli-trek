@@ -8,6 +8,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Aplikasi web mobile untuk pelanggan
+Route::view('/app', 'customer.app')->name('customer.app');
+
 // Halaman publik pesanan, dibuka dari QR di invoice. Dibatasi agar token tidak bisa ditebak.
 Route::get('/p/{token}', [PublicInvoiceController::class, 'show'])
     ->middleware('throttle:30,1')

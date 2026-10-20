@@ -1,0 +1,17 @@
+{
+    "name": "LaundryLink",
+    "short_name": "LaundryLink",
+    "start_url": "/app",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#eef5ff",
+    "theme_color": "#2563eb",
+    "icons": [
+        {
+            "src": "/customer/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ]
+}

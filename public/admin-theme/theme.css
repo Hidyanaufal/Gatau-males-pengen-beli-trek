@@ -1,0 +1,103 @@
+/* Tema hitam-hijau bergaya kaca (glassmorphism) untuk panel admin. Aktif di mode gelap. */
+
+html.dark {
+    --gl-card: rgba(255, 255, 255, .045);
+    --gl-card-hover: rgba(255, 255, 255, .075);
+    --gl-border: rgba(255, 255, 255, .09);
+    --gl-glow: rgba(16, 185, 129, .35);
+}
+
+/* Latar: hitam dengan cahaya hijau lembut */
+html.dark body,
+html.dark .fi-body {
+    background:
+        radial-gradient(900px 520px at 88% -8%, rgba(16, 185, 129, .22), transparent 60%),
+        radial-gradient(700px 520px at -8% 108%, rgba(34, 197, 94, .16), transparent 60%),
+        linear-gradient(160deg, #020403 0%, #07120d 55%, #030605 100%);
+    background-attachment: fixed;
+}
+html.dark .fi-layout,
+html.dark .fi-main-ctn {
+    background: transparent;
+}
+
+/* Topbar dan sidebar kaca */
+html.dark .fi-topbar,
+html.dark .fi-topbar > nav,
+html.dark .fi-sidebar,
+html.dark .fi-sidebar-header,
+html.dark .fi-sidebar-nav {
+    background: rgba(5, 12, 9, .55) !important;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border-color: var(--gl-border) !important;
+    box-shadow: none;
+}
+
+/* Kartu kaca: seksi, tabel, kartu statistik, grafik */
+html.dark .fi-section,
+html.dark .fi-ta-ctn,
+html.dark .fi-wi-stats-overview-stat,
+html.dark .fi-wi-chart,
+html.dark .fi-wi-widget > .fi-section {
+    background: var(--gl-card) !important;
+    border: 1px solid var(--gl-border) !important;
+    border-radius: 18px !important;
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .06) !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+html.dark .fi-wi-stats-overview-stat:hover {
+    transform: translateY(-3px);
+    border-color: rgba(16, 185, 129, .55) !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .45), 0 0 24px var(--gl-glow), inset 0 1px 0 rgba(255, 255, 255, .08) !important;
+}
+
+/* Judul halaman dengan gradasi hijau */
+html.dark .fi-header-heading {
+    background: linear-gradient(90deg, #ecfdf5, #34d399 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+}
+
+/* Isian, tabel, dan menu */
+html.dark .fi-input-wrp {
+    background: rgba(255, 255, 255, .04) !important;
+    border-radius: 12px;
+}
+html.dark .fi-ta-header-cell {
+    background: rgba(255, 255, 255, .03) !important;
+}
+html.dark .fi-ta-row:hover {
+    background: rgba(16, 185, 129, .07) !important;
+}
+html.dark .fi-dropdown-panel,
+html.dark .fi-modal-window {
+    background: rgba(8, 18, 13, .85) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--gl-border);
+}
+
+/* Animasi muncul halus */
+html.dark .fi-wi-widget,
+html.dark .fi-section,
+html.dark .fi-ta-ctn {
+    animation: gl-rise .45s ease both;
+}
+@keyframes gl-rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* Scrollbar tipis berwarna hijau */
+html.dark * { scrollbar-width: thin; scrollbar-color: rgba(16, 185, 129, .45) transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+    html.dark .fi-wi-widget, html.dark .fi-section, html.dark .fi-ta-ctn { animation: none; }
+    html.dark .fi-wi-stats-overview-stat { transition: none; }
+}
