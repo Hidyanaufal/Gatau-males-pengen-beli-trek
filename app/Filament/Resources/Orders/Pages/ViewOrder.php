@@ -16,6 +16,14 @@ class ViewOrder extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            // Membuka invoice cetak (berisi QR) di tab baru
+            Action::make('printInvoice')
+                ->label('Cetak invoice')
+                ->icon('heroicon-o-printer')
+                ->color('gray')
+                ->url(fn (): string => route('invoice.print', $this->record->getKey()))
+                ->openUrlInNewTab(),
+
             Action::make('changeStatus')
                 ->label('Ubah status')
                 ->icon('heroicon-o-arrow-path')
